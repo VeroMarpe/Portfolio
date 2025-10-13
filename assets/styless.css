@@ -1,0 +1,33 @@
+/* Tipografía y espaciado minimal */
+:root { --radius: 14px; }
+
+
+/* Tarjetas */
+.block-card {
+border: 1px solid #e5e7eb;
+border-radius: var(--radius);
+padding: 1rem 1.25rem;
+}
+.block-card:hover {
+border-color: #d1d5db;
+}
+
+
+/* Chips */
+.chip {
+display: inline-block;
+padding: 0.15rem 0.5rem;
+border-radius: 999px;
+background: #e5e7eb;
+margin-right: 0.25rem;
+font-size: 0.85rem;
+}
+
+
+/* Enlaces sutiles */
+.a-muted a { color: #111827; text-decoration: none; border-bottom: 1px dotted #9ca3af; }
+.a-muted a:hover { border-bottom-style: solid; }
+
+
+/* Footer */
+.footer { color:#6b7280; font-size: 0.9rem; margin-top: 1.5rem; }
