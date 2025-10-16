@@ -13,13 +13,13 @@ Ofrezco **servicios de análisis y automatización de datos** orientados a mejor
 
 **Áreas principales de trabajo:**
 - **Creación de dashboards** interactivos en Power BI o Tableau para visualizar KPIs de negocio.  
-- **Automatización de informes y procesos** con Python (ETL, integración de APIs, tratamiento de datos).  
+- **Automatización de informes y procesos** con Python.  
 - **Análisis exploratorio y limpieza de datos (EDA)** utilizando Python y SQL.  
 - **Análisis de negocio** aplicados a RRHH, finanzas y marketing (segmentación, rendimiento, eficiencia).  
 
 **Modalidades de colaboración:**
 - Por **proyecto completo**, desde la definición de métricas hasta la entrega del dashboard final.  
-- O mediante **colaboración continua**, ideal para soporte, mantenimiento o mej
+- O mediante **colaboración continua**, ideal para soporte, mantenimiento o mejora de soluciones existentes.
 """
 )
 
