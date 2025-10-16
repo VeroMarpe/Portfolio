@@ -9,17 +9,17 @@ st.title("Servicios")
 
 st.markdown(
 """
-Ofrezco **análisis de datos de extremo a extremo**:
+Ofrezco **servicios de análisis y automatización de datos** orientados a mejorar la toma de decisiones y optimizar procesos.
 
+**Áreas principales de trabajo:**
+- **Creación de dashboards** interactivos en Power BI o Tableau para visualizar KPIs de negocio.  
+- **Automatización de informes y procesos** con Python (ETL, integración de APIs, tratamiento de datos).  
+- **Análisis exploratorio y limpieza de datos (EDA)** utilizando Python y SQL.  
+- **Análisis de negocio** aplicados a RRHH, finanzas y marketing (segmentación, rendimiento, eficiencia).  
 
-- **Dashboarding** con Power BI / Tableau.
-- **Automatización de reporting** con Python (ETL, pipelines, APIs).
-- **EDA y data cleaning** con Python/SQL.
-- **People/Finanzas/Marketing Analytics** (elige tu enfoque principal).
-
-
-**Modalidades**: por proyecto cerrado o bolsa de horas.
-**Tarifa orientativa**: desde 30 €/h (primeros clientes) — ajustable según alcance y plazos.
+**Modalidades de colaboración:**
+- Por **proyecto completo**, desde la definición de métricas hasta la entrega del dashboard final.  
+- O mediante **colaboración continua**, ideal para soporte, mantenimiento o mej
 """
 )
 

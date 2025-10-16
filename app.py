@@ -25,11 +25,11 @@ if proj_path.exists():
 
 # ---- Header
 st.title("Verónica Martínez")
-st.subheader("Data Analyst · Python · SQL · Power BI")
+st.subheader("Data Analyst · Python · SQL · Tableau")
 st.write(
 """
-Soy analista de datos especializada en **automatización de reporting**, **dashboarding** y **EDA**.
-Trabajo con **Python, SQL y Power BI** para convertir datos en decisiones.
+Analista de datos especializada en **automatización de reporting**, **dashboarding** y **EDA**.
+Trabajo con **Python, SQL y Tableau** para convertir datos en decisiones.
 """
 )
 
