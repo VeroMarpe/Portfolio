@@ -8,14 +8,11 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 🌍 Idioma actual
-LANG = st.session_state.get("lang", "EN")
-
-# 🗺️ Traducciones
+# 🌍 Traducciones
 translations = {
     "EN": {
         "title": "Verónica Martínez",
-        "subtitle": "Data Analyst & Consultant",
+        "subtitle": "Data Analyst & Consultant · Python · SQL · Power BI",
         "intro": (
             "You’re about to make a big move in your company — but you’re not entirely sure if it’s brilliant or a beautiful mess. "
             "That’s where I come in.\n\n"
@@ -32,7 +29,7 @@ translations = {
     },
     "ES": {
         "title": "Verónica Martínez",
-        "subtitle": "Analista de Datos & Consultora",
+        "subtitle": "Analista de Datos & Consultora · Python · SQL · Power BI",
         "intro": (
             "Estás a punto de dar un gran paso en tu empresa, pero no tienes del todo claro si es brillante o un caos disfrazado. "
             "Ahí es donde entro yo.\n\n"
@@ -49,72 +46,64 @@ translations = {
     }
 }
 
+# --- idioma por query param (GET) ---
+qp = st.query_params
+if "lang" in qp:
+    st.session_state["lang"] = qp["lang"]
+
 lang = st.session_state.get("lang", "EN")
 t = translations[lang]
 
-# 🎨 Estilos globales (gris + fuente Forum + selector arriba derecha)
-st.markdown("""
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Forum&display=swap');
+# 🎨 CSS global + selector arriba derecha
+st.markdown(f"""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Forum&display=swap');
 
-        [data-testid="stAppViewContainer"] {
-            background-color: #F5F5F5 !important;
-            font-family: 'Forum', serif !important;
-        }
-        [data-testid="stSidebar"] {
-            background-color: #E0E0E0 !important;
-            font-family: 'Forum', serif !important;
-        }
-        h1, h2, h3, h4, h5, h6, p, span, li, div, label {
-            color: #000000 !important;
-            font-family: 'Forum', serif !important;
-        }
-        a {
-            color: #2b6cb0 !important;
-            text-decoration: none !important;
-        }
-        a:hover { text-decoration: underline !important; }
+[data-testid="stAppViewContainer"] {{
+    background-color:#F5F5F5 !important;
+    font-family:'Forum', serif !important;
+}}
+[data-testid="stSidebar"] {{
+    background-color:#E0E0E0 !important;
+    font-family:'Forum', serif !important;
+}}
+h1,h2,h3,h4,h5,h6,p,span,li,div,label {{
+    color:#000 !important;
+    font-family:'Forum', serif !important;
+}}
+a {{
+    color:#2b6cb0 !important;
+    text-decoration:none !important;
+}}
+a:hover {{ text-decoration:underline !important; }}
 
-        /* Contenedor del selector de idioma (arriba a la derecha) */
-        .lang-selector {
-            position: fixed;
-            top: 1rem;
-            right: 2rem;
-            background-color: #E0E0E0;
-            border-radius: 8px;
-            padding: 0.4rem 0.8rem;
-            font-family: 'Forum', serif;
-            z-index: 9999;
-        }
-        .lang-selector button {
-            background: none;
-            border: none;
-            font-size: 1.2rem;
-            cursor: pointer;
-            margin-left: 0.3rem;
-        }
-        .lang-selector span {
-            margin-right: 0.3rem;
-            color: #000000;
-        }
-    </style>
-""", unsafe_allow_html=True)
+/* Selector arriba a la derecha */
+.lang-selector {{
+    position: fixed;
+    top: 64px;
+    right: 24px;
+    background: rgba(224,224,224,0.9);
+    border: 1px solid #d4d4d4;
+    border-radius: 10px;
+    padding: 6px 10px;
+    z-index: 9999;
+    backdrop-filter: blur(2px);
+}}
+.lang-selector .label {{ margin-right: 6px; color:#000; }}
+.lang-selector a.flag {{
+    font-size: 20px;
+    margin-left: 6px;
+    display: inline-block;
+    line-height: 1;
+}}
+</style>
 
-# 🏳️ Selector de idioma flotante
-lang_html = f"""
 <div class="lang-selector">
-    <span>{t['language']}</span>
-    <form action="" method="post">
-        <button type="submit" name="lang" value="ES">🇪🇸</button>
-        <button type="submit" name="lang" value="EN">🇬🇧</button>
-    </form>
+    <span class="label">{t["language"]}</span>
+    <a class="flag" href="?lang=ES">🇪🇸</a>
+    <a class="flag" href="?lang=EN">🇬🇧</a>
 </div>
-"""
-st.markdown(lang_html, unsafe_allow_html=True)
-
-# Detectar selección manual del usuario
-if st.query_params.get("lang") or st.session_state.get("lang"):
-    st.session_state.lang = st.query_params.get("lang", st.session_state.get("lang", "EN"))
+""", unsafe_allow_html=True)
 
 # 🧭 Contenido principal
 st.title(t["title"])
