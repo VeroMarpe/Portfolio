@@ -1,32 +1,25 @@
 import streamlit as st
 
+st.set_page_config(page_title="Información y contacto", page_icon="💬", layout="wide")
 
-st.set_page_config(page_title="Contacto — Verónica", page_icon="✉️", layout="wide")
-
-
-st.title("Contacto")
-
+st.title("Información y contacto")
 
 st.markdown(
-"""
-¿Te interesa colaborar? Escríbeme por **email** o **LinkedIn**:
+    """
+Soy **Verónica Martínez**, analista de datos con experiencia en automatización de reporting y desarrollo de dashboards interactivos.  
+Combino un enfoque técnico (Python, SQL, Power BI) con visión de negocio en áreas de RRHH, finanzas y marketing.
 
+**Stack principal:**
+- Python (pandas, plotly, Streamlit)
+- SQL (MySQL, BigQuery)
+- Power BI / Tableau
+- Git · Docker · APIs
 
-- Email: [veronica@example.com](mailto:veronica@example.com)
-- LinkedIn: https://www.linkedin.com/in/tu-perfil
+---
 
-
-También puedo habilitar un formulario aquí si prefieres.
-"""
+### 📬 Contacto
+- **Email:** [veronica@example.com](mailto:veronica@example.com)
+- **LinkedIn:** [linkedin.com/in/vero-martinez](https://linkedin.com/in/vero-martinez)
+- **GitHub:** [github.com/VeroMarpe](https://github.com/VeroMarpe)
+    """
 )
-
-
-with st.expander("Formulario rápido (demo)"):
-    with st.form("contact_form"):
-        name = st.text_input("Nombre")
-        email = st.text_input("Email")
-        message = st.text_area("Mensaje")
-        sent = st.form_submit_button("Enviar")
-        if sent:
-            st.success("Gracias, te responderé pronto.")
-    # Nota: Para enviar correos reales, integra un backend o servicios como Formspree/Zapier.
