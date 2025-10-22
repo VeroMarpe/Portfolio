@@ -5,3 +5,7 @@ backgroundColor="#FFFFFF"
 secondaryBackgroundColor="#FFFFFF"
 textColor="#000000"
 font="sans serif"
+
+[ui]
+# 🔒 Bloquea el cambio automático por parte del sistema
+hideTopBar = false
