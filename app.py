@@ -7,11 +7,11 @@ st.set_page_config(
     layout="wide"
 )
 
-# 🌍 Estado inicial
+# 🧠 Estado inicial
 if "lang" not in st.session_state:
     st.session_state["lang"] = "EN"
 if "selected_project" not in st.session_state:
-    st.session_state["selected_project"] = "rrhh"
+    st.session_state["selected_project"] = None
 
 def change_language(lang_code):
     st.session_state["lang"] = lang_code
@@ -35,6 +35,8 @@ translations = {
             "What makes the difference isn’t the tech itself (though I master it), but **how I use it to validate what truly drives the business**.\n\n"
             "In short: I’m the person who turns chaos into insight — and helps you make sure your next “big step” isn’t a leap into the void."
         ),
+        "projects_title": "Projects",
+        "select_project": "Select a project to explore",
         "projects": {
             "rrhh": "HR Reporting Automation",
             "ecommerce": "E-commerce Dashboard",
@@ -55,6 +57,8 @@ translations = {
             "Lo que me diferencia no es la técnica (aunque la domino), sino **cómo la aplico para validar lo que realmente mueve el negocio**.\n\n"
             "En resumen: soy esa persona que traduce el caos en decisiones con sentido… y que evita que el próximo “gran paso” se convierta en un salto al vacío."
         ),
+        "projects_title": "Proyectos",
+        "select_project": "Selecciona un proyecto para explorarlo",
         "projects": {
             "rrhh": "Automatización RRHH",
             "ecommerce": "Dashboard eCommerce",
@@ -70,6 +74,7 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Forum&display=swap');
 
+/* Fondo y fuente general */
 [data-testid="stAppViewContainer"] {
     background-color: #F5F5F5 !important;
     font-family: 'Forum', serif !important;
@@ -78,6 +83,11 @@ st.markdown("""
     background-color: #E0E0E0 !important;
     font-family: 'Forum', serif !important;
 }
+
+/* Elimina el menú de navegación "app/contact/projects" */
+section[data-testid="stSidebarNav"] { display: none !important; }
+
+/* Textos */
 h1, h2, h3, h4, h5, h6, p, span, li, div, label {
     color: #000 !important;
     font-family: 'Forum', serif !important;
@@ -85,7 +95,7 @@ h1, h2, h3, h4, h5, h6, p, span, li, div, label {
 a { color: #2b6cb0 !important; text-decoration: none !important; }
 a:hover { text-decoration: underline !important; }
 
-/* Miniaturas dentro del sidebar */
+/* Miniaturas clicables */
 .project-thumb {
     cursor: pointer;
     border-radius: 10px;
@@ -101,6 +111,19 @@ a:hover { text-decoration: underline !important; }
     border: 2px solid #2b6cb0;
     transform: scale(1.03);
 }
+
+/* Selector idioma */
+.lang-selector {
+    position: fixed;
+    top: 64px;
+    right: 24px;
+    background: rgba(224,224,224,0.9);
+    border: 1px solid #d4d4d4;
+    border-radius: 10px;
+    padding: 6px 10px;
+    z-index: 9999;
+}
+.lang-selector span { margin-right: 6px; color: #000; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -123,32 +146,42 @@ projects_info = {
     }
 }
 
-# 🌍 Selector idioma arriba
-st.markdown(
-    f'<div style="position:fixed; top:64px; right:24px; background:#E0E0E0; border-radius:10px; padding:6px 10px; z-index:9999;">{t["language"]} 🇪🇸 / 🇬🇧</div>',
-    unsafe_allow_html=True,
-)
+# 🌍 Selector de idioma
+st.markdown(f"""
+<div class="lang-selector">
+    <span>{t["language"]}</span>
+    <a href="#" onclick="window.parent.postMessage('ES', '*')">🇪🇸</a>
+    <a href="#" onclick="window.parent.postMessage('EN', '*')">🇬🇧</a>
+</div>
+""", unsafe_allow_html=True)
 
-# 🖼️ Sidebar personalizado
+# --- Sidebar personalizado (solo miniaturas)
 with st.sidebar:
     st.header("Projects" if lang == "EN" else "Proyectos")
     for key, proj in projects_info.items():
         label = t["projects"][key]
-        is_active = " active" if st.session_state["selected_project"] == key else ""
-        st.markdown(f'<div class="project-thumb{is_active}">', unsafe_allow_html=True)
-        if st.button(label, key=f"btn_{key}"):
+        if st.session_state["selected_project"] == key:
+            st.markdown(f"<div class='project-thumb active'>", unsafe_allow_html=True)
+        else:
+            st.markdown(f"<div class='project-thumb'>", unsafe_allow_html=True)
+
+        # Clic sobre la miniatura
+        if st.button("", key=f"thumb_{key}"):
             st.session_state["selected_project"] = key
-        st.image(proj["img"], caption=label)  # ✅ sin use_container_width
+
+        st.image(proj["img"], caption=label)
         st.markdown("</div>", unsafe_allow_html=True)
 
-# 🧭 Contenido central
+# --- Contenido principal
 st.title(t["title"])
 st.subheader(t["subtitle"])
 st.write(t["intro"])
-
 st.divider()
 
+# Mostrar descripción (sin imagen)
 selected = st.session_state["selected_project"]
-proj = projects_info[selected]
-st.image(proj["img"])
-st.markdown(proj["desc_es"] if lang == "ES" else proj["desc_en"])
+if selected:
+    proj = projects_info[selected]
+    st.markdown(proj["desc_es"] if lang == "ES" else proj["desc_en"])
+else:
+    st.info("👈 " + (t["select_project"]))
