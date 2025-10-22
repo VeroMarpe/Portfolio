@@ -1,5 +1,11 @@
 import streamlit as st
 
+st._config.set_option("theme.base", "light")
+st._config.set_option("theme.backgroundColor", "#F5F5F5")
+st._config.set_option("theme.secondaryBackgroundColor", "#FFFFFF")
+st._config.set_option("theme.textColor", "#000000")
+
+
 st.set_page_config(
     page_title="Verónica Martínez — Data Analyst",
     page_icon="📊",
