@@ -7,24 +7,6 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# Estilo minimalista (fondo blanco, fuente gris)
-st.markdown("""
-<style>
-body {
-    background-color: #ffffff;
-    color: #222222;
-    font-family: 'Inter', sans-serif;
-}
-a {
-    color: #2b6cb0;
-    text-decoration: none;
-}
-a:hover {
-    text-decoration: underline;
-}
-</style>
-""", unsafe_allow_html=True)
-
 st.title("Verónica Martínez")
 st.subheader("Analista de Datos · Python · SQL · Power BI")
 
