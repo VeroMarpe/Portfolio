@@ -1,6 +1,6 @@
 import streamlit as st
 
-# ⚙️ Configuración
+# ⚙️ Configuración base
 st.set_page_config(
     page_title="Verónica Martínez — Data Analyst & Consultant",
     page_icon="📊",
@@ -19,7 +19,7 @@ def change_language(lang_code):
 
 lang = st.session_state["lang"]
 
-# 🗺️ Traducciones
+# 🌐 Traducciones
 translations = {
     "EN": {
         "language": "Language:",
@@ -62,6 +62,7 @@ translations = {
         }
     }
 }
+
 t = translations[lang]
 
 # 🎨 Estilos globales
@@ -88,25 +89,22 @@ a:hover { text-decoration: underline !important; }
 .project-thumb {
     cursor: pointer;
     border-radius: 10px;
-    margin-bottom: 0.5rem;
+    margin-bottom: 10px;
     transition: all 0.2s ease-in-out;
     border: 2px solid transparent;
 }
 .project-thumb:hover {
-    transform: scale(1.03);
+    transform: scale(1.05);
     border: 2px solid #2b6cb0;
 }
 .project-thumb.active {
     border: 2px solid #2b6cb0;
-    transform: scale(1.02);
+    transform: scale(1.03);
 }
 </style>
 """, unsafe_allow_html=True)
 
-# 🌐 Selector idioma (arriba a la derecha)
-st.markdown(f'<div style="position:fixed; top:64px; right:24px; background:#E0E0E0; border-radius:10px; padding:6px 10px; z-index:9999;">{t["language"]} 🇪🇸 / 🇬🇧</div>', unsafe_allow_html=True)
-
-# --- proyectos
+# 📊 Proyectos
 projects_info = {
     "rrhh": {
         "img": "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=400",
@@ -125,17 +123,25 @@ projects_info = {
     }
 }
 
-# --- Sidebar con miniaturas
+# 🌍 Selector idioma arriba
+st.markdown(
+    f'<div style="position:fixed; top:64px; right:24px; background:#E0E0E0; border-radius:10px; padding:6px 10px; z-index:9999;">{t["language"]} 🇪🇸 / 🇬🇧</div>',
+    unsafe_allow_html=True,
+)
+
+# 🖼️ Sidebar personalizado
 with st.sidebar:
-    st.header(t["projects"]["rrhh"] if lang == "ES" else "Projects")
+    st.header("Projects" if lang == "EN" else "Proyectos")
     for key, proj in projects_info.items():
         label = t["projects"][key]
-        active_class = " active" if st.session_state["selected_project"] == key else ""
-        if st.sidebar.button(label, key=key):
+        is_active = " active" if st.session_state["selected_project"] == key else ""
+        st.markdown(f'<div class="project-thumb{is_active}">', unsafe_allow_html=True)
+        if st.button(label, key=f"btn_{key}"):
             st.session_state["selected_project"] = key
-        st.sidebar.image(proj["img"], caption=label, use_container_width=True)
+        st.image(proj["img"], caption=label)  # ✅ sin use_container_width
+        st.markdown("</div>", unsafe_allow_html=True)
 
-# --- Contenido central
+# 🧭 Contenido central
 st.title(t["title"])
 st.subheader(t["subtitle"])
 st.write(t["intro"])
@@ -144,5 +150,5 @@ st.divider()
 
 selected = st.session_state["selected_project"]
 proj = projects_info[selected]
-st.image(proj["img"], use_container_width=True)
+st.image(proj["img"])
 st.markdown(proj["desc_es"] if lang == "ES" else proj["desc_en"])
