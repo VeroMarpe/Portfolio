@@ -1,17 +1,17 @@
 import streamlit as st
 
-# ⚙️ Configuración inicial
+# ⚙️ Configuración
 st.set_page_config(
     page_title="Verónica Martínez — Data Analyst & Consultant",
     page_icon="📊",
     layout="wide"
 )
 
-# 🌍 Estado inicial de idioma y proyecto seleccionado
+# 🌍 Estado inicial
 if "lang" not in st.session_state:
     st.session_state["lang"] = "EN"
 if "selected_project" not in st.session_state:
-    st.session_state["selected_project"] = None
+    st.session_state["selected_project"] = "rrhh"
 
 def change_language(lang_code):
     st.session_state["lang"] = lang_code
@@ -35,7 +35,6 @@ translations = {
             "What makes the difference isn’t the tech itself (though I master it), but **how I use it to validate what truly drives the business**.\n\n"
             "In short: I’m the person who turns chaos into insight — and helps you make sure your next “big step” isn’t a leap into the void."
         ),
-        "projects_title": "Projects",
         "projects": {
             "rrhh": "HR Reporting Automation",
             "ecommerce": "E-commerce Dashboard",
@@ -56,97 +55,94 @@ translations = {
             "Lo que me diferencia no es la técnica (aunque la domino), sino **cómo la aplico para validar lo que realmente mueve el negocio**.\n\n"
             "En resumen: soy esa persona que traduce el caos en decisiones con sentido… y que evita que el próximo “gran paso” se convierta en un salto al vacío."
         ),
-        "projects_title": "Proyectos",
         "projects": {
-            "rrhh": "Automatización de reporting RRHH",
-            "ecommerce": "Dashboard de ventas eCommerce",
+            "rrhh": "Automatización RRHH",
+            "ecommerce": "Dashboard eCommerce",
             "ine": "EDA desempleo (INE)"
         }
     }
 }
-
 t = translations[lang]
 
-# 🎨 Estilo global + fuente Forum
+# 🎨 Estilos globales
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Forum&display=swap');
 
 [data-testid="stAppViewContainer"] {
-    background-color:#F5F5F5 !important;
-    font-family:'Forum', serif !important;
+    background-color: #F5F5F5 !important;
+    font-family: 'Forum', serif !important;
 }
 [data-testid="stSidebar"] {
-    background-color:#E0E0E0 !important;
-    font-family:'Forum', serif !important;
+    background-color: #E0E0E0 !important;
+    font-family: 'Forum', serif !important;
 }
-h1,h2,h3,h4,h5,h6,p,span,li,div,label {
-    color:#000 !important;
-    font-family:'Forum', serif !important;
+h1, h2, h3, h4, h5, h6, p, span, li, div, label {
+    color: #000 !important;
+    font-family: 'Forum', serif !important;
 }
-a { color:#2b6cb0 !important; text-decoration:none !important; }
-a:hover { text-decoration:underline !important; }
+a { color: #2b6cb0 !important; text-decoration: none !important; }
+a:hover { text-decoration: underline !important; }
 
-/* Selector arriba a la derecha */
-.lang-selector {
-    position: fixed;
-    top: 64px;
-    right: 24px;
-    background: rgba(224,224,224,0.9);
-    border: 1px solid #d4d4d4;
+/* Miniaturas dentro del sidebar */
+.project-thumb {
+    cursor: pointer;
     border-radius: 10px;
-    padding: 6px 10px;
-    z-index: 9999;
+    margin-bottom: 0.5rem;
+    transition: all 0.2s ease-in-out;
+    border: 2px solid transparent;
 }
-.lang-selector span { margin-right: 6px; color:#000; }
+.project-thumb:hover {
+    transform: scale(1.03);
+    border: 2px solid #2b6cb0;
+}
+.project-thumb.active {
+    border: 2px solid #2b6cb0;
+    transform: scale(1.02);
+}
 </style>
 """, unsafe_allow_html=True)
 
-# 🌐 Selector idioma
-st.markdown(f'<div class="lang-selector"><span>{t["language"]}</span></div>', unsafe_allow_html=True)
-col_flag_es, col_flag_en = st.columns([0.93, 0.07])
-with col_flag_en:
-    if st.button("🇪🇸" if lang == "EN" else "🇬🇧"):
-        change_language("ES" if lang == "EN" else "EN")
+# 🌐 Selector idioma (arriba a la derecha)
+st.markdown(f'<div style="position:fixed; top:64px; right:24px; background:#E0E0E0; border-radius:10px; padding:6px 10px; z-index:9999;">{t["language"]} 🇪🇸 / 🇬🇧</div>', unsafe_allow_html=True)
 
-# 🧭 Cabecera principal
+# --- proyectos
+projects_info = {
+    "rrhh": {
+        "img": "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=400",
+        "desc_es": "Automatización de reportes y KPIs en RRHH usando Python + SQL + Power BI.",
+        "desc_en": "Automated HR dashboards and KPI reporting with Python + SQL + Power BI."
+    },
+    "ecommerce": {
+        "img": "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=400",
+        "desc_es": "Dashboard eCommerce con análisis de cohortes, RFM y márgenes.",
+        "desc_en": "E-commerce dashboard with cohort, RFM, and margin analysis."
+    },
+    "ine": {
+        "img": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400",
+        "desc_es": "Análisis exploratorio del desempleo en España (INE).",
+        "desc_en": "Exploratory data analysis of Spanish unemployment data (INE)."
+    }
+}
+
+# --- Sidebar con miniaturas
+with st.sidebar:
+    st.header(t["projects"]["rrhh"] if lang == "ES" else "Projects")
+    for key, proj in projects_info.items():
+        label = t["projects"][key]
+        active_class = " active" if st.session_state["selected_project"] == key else ""
+        if st.sidebar.button(label, key=key):
+            st.session_state["selected_project"] = key
+        st.sidebar.image(proj["img"], caption=label, use_container_width=True)
+
+# --- Contenido central
 st.title(t["title"])
 st.subheader(t["subtitle"])
 st.write(t["intro"])
 
 st.divider()
 
-# 🧱 Layout de proyectos (izquierda miniaturas, derecha detalle)
-col1, col2 = st.columns([1, 2])
-col1.header(t["projects_title"])
-
-# --- proyectos (miniaturas clicables)
-projects_info = {
-    "rrhh": {
-        "img": "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=400",
-        "desc": "Automated HR dashboards and KPI reporting using Python + SQL + Power BI."
-    },
-    "ecommerce": {
-        "img": "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=400",
-        "desc": "E-commerce performance dashboard with cohort, RFM, and margin analysis."
-    },
-    "ine": {
-        "img": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400",
-        "desc": "EDA and visualization of Spanish unemployment data from INE."
-    }
-}
-
-# --- miniaturas
-for key, name in t["projects"].items():
-    if col1.button(name, key=key):
-        st.session_state["selected_project"] = key
-
-# --- detalle dinámico del proyecto
 selected = st.session_state["selected_project"]
-
-if selected:
-    p = projects_info[selected]
-    col2.image(p["img"], use_container_width=True)
-    col2.write(p["desc"])
-else:
-    col2.info("👈 " + ("Select a project to explore" if lang == "EN" else "Selecciona un proyecto para explorarlo"))
+proj = projects_info[selected]
+st.image(proj["img"], use_container_width=True)
+st.markdown(proj["desc_es"] if lang == "ES" else proj["desc_en"])
