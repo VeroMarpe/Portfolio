@@ -11,19 +11,13 @@ lang = st.session_state.get("lang", "EN")
 translations = {
     "EN": {
         "language": "Language:",
-        "title": "Contact",
-        "intro": "Want to discuss a project, collaboration, or just exchange ideas about data and strategy?",
-        "cta": "Let’s connect:",
-        "email": "📧 Email: ",
-        "linkedin": "🔗 LinkedIn: "
+        "title": "Projects",
+        "intro": "A selection of data analysis and visualization projects that combine technical depth and business impact."
     },
     "ES": {
         "language": "Idioma:",
-        "title": "Contacto",
-        "intro": "¿Quieres hablar sobre un proyecto, una colaboración o simplemente intercambiar ideas sobre datos y estrategia?",
-        "cta": "Conectemos:",
-        "email": "📧 Correo: ",
-        "linkedin": "🔗 LinkedIn: "
+        "title": "Proyectos",
+        "intro": "Una selección de proyectos de análisis y visualización de datos que combinan profundidad técnica e impacto en negocio."
     }
 }
 t = translations[lang]
@@ -52,9 +46,12 @@ a:hover {{ text-decoration:underline !important; }}
 # --- contenido ---
 st.title(t["title"])
 st.write(t["intro"])
-st.write(t["cta"])
 
-st.markdown(f"""
-{t["email"]} [veronicamartinez@example.com](mailto:veronicamartinez@example.com)  
-{t["linkedin"]} [linkedin.com/in/veronicamartinez](https://linkedin.com/in/veronicamartinez)
+# ejemplo simple de cards de proyectos (ajústalos a tu YAML luego)
+st.markdown("""
+- **RRHH Reporting Automation** — Python + SQL + Power BI  
+  Automates HR reporting with 60% less manual time.
+
+- **E-commerce Sales Dashboard** — Tableau + Python  
+  Shows cohort, RFM and margin analysis improving repurchase rate.
 """)
