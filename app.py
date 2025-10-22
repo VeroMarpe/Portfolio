@@ -1,18 +1,52 @@
 import streamlit as st
 
-st._config.set_option("theme.base", "light")
-st._config.set_option("theme.backgroundColor", "#F5F5F5")
-st._config.set_option("theme.secondaryBackgroundColor", "#FFFFFF")
-st._config.set_option("theme.textColor", "#000000")
-
-
+# 📋 Configuración inicial
 st.set_page_config(
     page_title="Verónica Martínez — Data Analyst",
     page_icon="📊",
     layout="wide",
-    initial_sidebar_state="collapsed",
+    initial_sidebar_state="expanded"
 )
 
+# 🎨 Estilos globales (fondo gris claro + sidebar gris medio)
+st.markdown("""
+    <style>
+        /* Fondo principal */
+        [data-testid="stAppViewContainer"] {
+            background-color: #F5F5F5 !important;
+        }
+        /* Sidebar */
+        [data-testid="stSidebar"] {
+            background-color: #E0E0E0 !important;
+        }
+        /* Encabezados y texto */
+        h1, h2, h3, h4, h5, h6, p, span, li, div, label {
+            color: #000000 !important;
+        }
+        /* Enlaces */
+        a {
+            color: #2b6cb0 !important;
+            text-decoration: none !important;
+        }
+        a:hover {
+            text-decoration: underline !important;
+        }
+        /* Botones */
+        button[kind="primary"] {
+            background-color: #2b6cb0 !important;
+            color: white !important;
+            border-radius: 6px !important;
+        }
+        /* Cuadros de información */
+        [data-testid="stAlert"] {
+            background-color: #FFFFFF !important;
+            color: #000000 !important;
+            border: 1px solid #E0E0E0 !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+# 🧭 Contenido principal
 st.title("Verónica Martínez")
 st.subheader("Analista de Datos · Python · SQL · Power BI")
 
@@ -25,6 +59,7 @@ Trabajo con **Python, SQL y Power BI** para transformar datos en decisiones.
 
 st.divider()
 
+# 🔗 Enlaces a páginas internas
 col1, col2 = st.columns(2)
 with col1:
     st.page_link("pages/projects.py", label="📁 Ver proyectos")
