@@ -15,7 +15,7 @@ LANG = st.session_state.get("lang", "EN")
 translations = {
     "EN": {
         "title": "Verónica Martínez",
-        "subtitle": "Data Analyst & Consultant · Python · SQL · Power BI",
+        "subtitle": "Data Analyst & Consultant",
         "intro": (
             "You’re about to make a big move in your company — but you’re not entirely sure if it’s brilliant or a beautiful mess. "
             "That’s where I come in.\n\n"
@@ -27,11 +27,12 @@ translations = {
             "In short: I’m the person who turns chaos into insight — and helps you make sure your next “big step” isn’t a leap into the void."
         ),
         "projects": "📁 View projects",
-        "contact": "💬 Info & contact"
+        "contact": "💬 Info & contact",
+        "language": "Language:"
     },
     "ES": {
         "title": "Verónica Martínez",
-        "subtitle": "Analista de Datos & Consultora · Python · SQL · Power BI",
+        "subtitle": "Analista de Datos & Consultora",
         "intro": (
             "Estás a punto de dar un gran paso en tu empresa, pero no tienes del todo claro si es brillante o un caos disfrazado. "
             "Ahí es donde entro yo.\n\n"
@@ -43,24 +44,15 @@ translations = {
             "En resumen: soy esa persona que traduce el caos en decisiones con sentido… y que evita que el próximo “gran paso” se convierta en un salto al vacío."
         ),
         "projects": "📁 Ver proyectos",
-        "contact": "💬 Información & contacto"
+        "contact": "💬 Información & contacto",
+        "language": "Idioma:"
     }
 }
-
-# 🏳️ Selector de idioma (banderas)
-col_lang1, col_lang2 = st.columns([0.08, 0.9])
-with col_lang1:
-    if st.button("🇪🇸"):
-        st.session_state.lang = "ES"
-        st.rerun()
-    if st.button("🇬🇧"):
-        st.session_state.lang = "EN"
-        st.rerun()
 
 lang = st.session_state.get("lang", "EN")
 t = translations[lang]
 
-# 🎨 Estilos globales (gris + fuente Forum)
+# 🎨 Estilos globales (gris + fuente Forum + selector arriba derecha)
 st.markdown("""
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Forum&display=swap');
@@ -82,8 +74,47 @@ st.markdown("""
             text-decoration: none !important;
         }
         a:hover { text-decoration: underline !important; }
+
+        /* Contenedor del selector de idioma (arriba a la derecha) */
+        .lang-selector {
+            position: fixed;
+            top: 1rem;
+            right: 2rem;
+            background-color: #E0E0E0;
+            border-radius: 8px;
+            padding: 0.4rem 0.8rem;
+            font-family: 'Forum', serif;
+            z-index: 9999;
+        }
+        .lang-selector button {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: 0.3rem;
+        }
+        .lang-selector span {
+            margin-right: 0.3rem;
+            color: #000000;
+        }
     </style>
 """, unsafe_allow_html=True)
+
+# 🏳️ Selector de idioma flotante
+lang_html = f"""
+<div class="lang-selector">
+    <span>{t['language']}</span>
+    <form action="" method="post">
+        <button type="submit" name="lang" value="ES">🇪🇸</button>
+        <button type="submit" name="lang" value="EN">🇬🇧</button>
+    </form>
+</div>
+"""
+st.markdown(lang_html, unsafe_allow_html=True)
+
+# Detectar selección manual del usuario
+if st.query_params.get("lang") or st.session_state.get("lang"):
+    st.session_state.lang = st.query_params.get("lang", st.session_state.get("lang", "EN"))
 
 # 🧭 Contenido principal
 st.title(t["title"])
