@@ -1,6 +1,6 @@
 import streamlit as st
 
-# ⚙️ Configuración base
+# ⚙️ Configuración general
 st.set_page_config(
     page_title="Verónica Martínez — Data Analyst & Consultant",
     page_icon="📊",
@@ -13,13 +13,9 @@ if "lang" not in st.session_state:
 if "selected_project" not in st.session_state:
     st.session_state["selected_project"] = None
 
-def change_language(lang_code):
-    st.session_state["lang"] = lang_code
-    st.rerun()
-
 lang = st.session_state["lang"]
 
-# 🌐 Traducciones
+# 🗺️ Traducciones
 translations = {
     "EN": {
         "language": "Language:",
@@ -66,15 +62,14 @@ translations = {
         }
     }
 }
-
 t = translations[lang]
 
-# 🎨 Estilos globales
+# 🎨 Estilos
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Forum&display=swap');
 
-/* Fondo y fuente general */
+/* Fondo y fuente */
 [data-testid="stAppViewContainer"] {
     background-color: #F5F5F5 !important;
     font-family: 'Forum', serif !important;
@@ -84,7 +79,7 @@ st.markdown("""
     font-family: 'Forum', serif !important;
 }
 
-/* Elimina el menú de navegación "app/contact/projects" */
+/* Elimina menú interno */
 section[data-testid="stSidebarNav"] { display: none !important; }
 
 /* Textos */
@@ -97,9 +92,9 @@ a:hover { text-decoration: underline !important; }
 
 /* Miniaturas clicables */
 .project-thumb {
-    cursor: pointer;
     border-radius: 10px;
     margin-bottom: 10px;
+    overflow: hidden;
     transition: all 0.2s ease-in-out;
     border: 2px solid transparent;
 }
@@ -112,7 +107,15 @@ a:hover { text-decoration: underline !important; }
     transform: scale(1.03);
 }
 
-/* Selector idioma */
+/* Caption overlay */
+.thumb-caption {
+    text-align: center;
+    margin-top: 4px;
+    font-size: 0.9rem;
+    color: #000;
+}
+
+/* Idioma arriba derecha */
 .lang-selector {
     position: fixed;
     top: 64px;
@@ -127,7 +130,7 @@ a:hover { text-decoration: underline !important; }
 </style>
 """, unsafe_allow_html=True)
 
-# 📊 Proyectos
+# 📂 Proyectos
 projects_info = {
     "rrhh": {
         "img": "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=400",
@@ -146,31 +149,40 @@ projects_info = {
     }
 }
 
-# 🌍 Selector de idioma
+# 🌍 Selector idioma
 st.markdown(f"""
 <div class="lang-selector">
-    <span>{t["language"]}</span>
-    <a href="#" onclick="window.parent.postMessage('ES', '*')">🇪🇸</a>
-    <a href="#" onclick="window.parent.postMessage('EN', '*')">🇬🇧</a>
+    <span>{t["language"]}</span> 🇪🇸 / 🇬🇧
 </div>
 """, unsafe_allow_html=True)
 
-# --- Sidebar personalizado (solo miniaturas)
+# --- Sidebar con imágenes clicables
 with st.sidebar:
-    st.header("Projects" if lang == "EN" else "Proyectos")
+    st.header(t["projects_title"])
     for key, proj in projects_info.items():
         label = t["projects"][key]
-        if st.session_state["selected_project"] == key:
-            st.markdown(f"<div class='project-thumb active'>", unsafe_allow_html=True)
-        else:
-            st.markdown(f"<div class='project-thumb'>", unsafe_allow_html=True)
+        is_active = " active" if st.session_state["selected_project"] == key else ""
 
-        # Clic sobre la miniatura
-        if st.button("", key=f"thumb_{key}"):
-            st.session_state["selected_project"] = key
+        # Cada miniatura se convierte en un botón HTML
+        st.markdown(
+            f"""
+            <div class="project-thumb{is_active}">
+                <form action="" method="get">
+                    <button name="project" value="{key}" type="submit" style="border:none; background:none; padding:0;">
+                        <img src="{proj['img']}" width="100%" style="border-radius:10px;">
+                    </button>
+                </form>
+                <div class="thumb-caption">{label}</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
-        st.image(proj["img"], caption=label)
-        st.markdown("</div>", unsafe_allow_html=True)
+# --- Capturar el clic (a través del query param simulado)
+project_clicked = st.query_params.get("project")
+if project_clicked:
+    st.session_state["selected_project"] = project_clicked
+    st.query_params.clear()  # Limpia la URL
 
 # --- Contenido principal
 st.title(t["title"])
@@ -178,7 +190,6 @@ st.subheader(t["subtitle"])
 st.write(t["intro"])
 st.divider()
 
-# Mostrar descripción (sin imagen)
 selected = st.session_state["selected_project"]
 if selected:
     proj = projects_info[selected]
